@@ -11,6 +11,7 @@ func RegisterRoutes(r *gin.Engine) {
 	//Routes pour les parcelles
 	parcelles := r.Group("/api/parcelles")
 	{
+		parcelles.GET("user/:user_id", controllers.GetParcellesByUser)
 		parcelles.POST("/create", controllers.CreateParcelle)
 		parcelles.GET("/", controllers.GetAllParcelles)
 		parcelles.DELETE("/delete/:id", controllers.DeleteParcelle)

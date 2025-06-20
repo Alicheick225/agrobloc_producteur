@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func GetAllParcelles(c *gin.Context) {
@@ -67,7 +68,7 @@ func DeleteParcelle(c *gin.Context) {
 func UpdateParcelle(c *gin.Context) {
 	// 1. Lire l'ID dans l'URL
 	idParam := c.Param("id")
-	id, err := strconv.Atoi(idParam)
+	id, err := uuid.Parse(idParam)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return
@@ -121,4 +122,25 @@ func GetParcelleByID(c *gin.Context) {
 
 	// 3. Retourner la parcelle trouvée
 	c.JSON(http.StatusOK, parcelle)
+}
+
+func GetParcellesByUser(c *gin.Context) {
+	userIDParam := c.Param("user_id")
+
+	// Parse l'UUID
+	userID, err := uuid.Parse(userIDParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID utilisateur invalide"})
+		return
+	}
+
+	var parcelles []models.Parcelle
+
+	// Filtrer les parcelles par user_id
+	if err := config.DB.Where("user_id = ?", userID).Find(&parcelles).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, parcelles)
 }
