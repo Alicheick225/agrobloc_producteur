@@ -31,7 +31,10 @@ func InitDB() {
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		dbHost, dbPort, dbUser, dbPass, dbName,
 	)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.New(postgres.Config{
+        DSN:                  dsn,
+        PreferSimpleProtocol: true, // ✅ Désactive les prepared statements automatiques
+    }), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Erreur de connexion à la base :", err)
 	}

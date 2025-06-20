@@ -4,7 +4,6 @@ import (
 	"agrobloc_producteur/config"
 	"agrobloc_producteur/models"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -42,7 +41,7 @@ func CreateParcelle(c *gin.Context) {
 
 func DeleteParcelle(c *gin.Context) {
 	idParam := c.Param("id")
-	id, err := strconv.Atoi(idParam)
+	id, err := uuid.Parse(idParam)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return
@@ -107,7 +106,7 @@ func UpdateParcelle(c *gin.Context) {
 func GetParcelleByID(c *gin.Context) {
 	// 1. Récupérer l'ID dans l'URL
 	idParam := c.Param("id")
-	id, err := strconv.Atoi(idParam)
+	id, err := uuid.Parse(idParam)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return

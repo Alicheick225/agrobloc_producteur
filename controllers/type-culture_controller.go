@@ -4,9 +4,9 @@ import (
 	"agrobloc_producteur/config"
 	"agrobloc_producteur/models"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func CreateTypeCulture(c *gin.Context) {
@@ -37,7 +37,7 @@ func GetAllTypesCultures(c *gin.Context) {
 }
 
 func GetTypeCultureByID(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return
@@ -53,7 +53,7 @@ func GetTypeCultureByID(c *gin.Context) {
 }
 
 func UpdateTypeCulture(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return
@@ -83,7 +83,7 @@ func UpdateTypeCulture(c *gin.Context) {
 }
 
 func DeleteTypeCulture(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := uuid.Parse(c.Param("id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "ID invalide"})
 		return
